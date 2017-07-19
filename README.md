@@ -18,7 +18,7 @@ sudo ~/intelFPGA/17.0/quartus/bin/jtagd  # this is the jtag server and should on
 sudo ~/intelFPGA/17.0/quartus/bin/jtagconfig 
 1) DE-SoC [3-2.1.1]
   4BA00477   SOCVHPS
-  02D020DD   5CSEBA6(.|ES)/5CSEMA6/..
+  02D010DD   5CSE(BA4|MA4)/5CSXFC4C6
 ```
 * open the programmer in quartus
 * select your usb ( in the example output above that would be [3-2.1.1] )
