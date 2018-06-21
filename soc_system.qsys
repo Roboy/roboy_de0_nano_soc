@@ -9,11 +9,43 @@
    categories="System" />
  <parameter name="bonusData"><![CDATA[bonusData 
 {
+   element DarkRoomOOTXdecoder_0
+   {
+      datum _sortIndex
+      {
+         value = "12";
+         type = "int";
+      }
+   }
+   element DarkRoomOOTXdecoder_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "65792";
+         type = "String";
+      }
+   }
+   element DarkRoom_0
+   {
+      datum _sortIndex
+      {
+         value = "11";
+         type = "int";
+      }
+   }
+   element DarkRoom_0.avalon_slave_0
+   {
+      datum baseAddress
+      {
+         value = "66048";
+         type = "String";
+      }
+   }
    element button_pio
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "4";
          type = "int";
       }
    }
@@ -34,7 +66,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "0";
          type = "int";
       }
    }
@@ -42,7 +74,7 @@
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "5";
          type = "int";
       }
    }
@@ -71,7 +103,7 @@
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "9";
          type = "int";
       }
    }
@@ -79,7 +111,7 @@
    {
       datum _sortIndex
       {
-         value = "0";
+         value = "1";
          type = "int";
       }
    }
@@ -95,7 +127,7 @@
    {
       datum _sortIndex
       {
-         value = "1";
+         value = "2";
          type = "int";
       }
    }
@@ -103,7 +135,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "10";
          type = "int";
       }
    }
@@ -129,7 +161,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "8";
          type = "int";
       }
    }
@@ -150,7 +182,7 @@
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "6";
          type = "int";
       }
    }
@@ -171,7 +203,7 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "7";
          type = "int";
       }
    }
@@ -187,7 +219,7 @@
    {
       datum _sortIndex
       {
-         value = "2";
+         value = "3";
          type = "int";
       }
    }
@@ -232,6 +264,16 @@
    dir="end" />
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface
+   name="darkroom_0_conduit_end"
+   internal="DarkRoom_0.conduit_end"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="darkroomootxdecoder_0_conduit_end"
+   internal="DarkRoomOOTXdecoder_0.conduit_end"
+   type="conduit"
+   dir="end" />
+ <interface
    name="dipsw_pio_external_connection"
    internal="dipsw_pio.external_connection"
    type="conduit"
@@ -270,6 +312,18 @@
    dir="end" />
  <interface name="memory" internal="hps_0.memory" type="conduit" dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
+ <module
+   name="DarkRoomOOTXdecoder_0"
+   kind="DarkRoomOOTXdecoder"
+   version="1.0"
+   enabled="1">
+  <parameter name="ENABLE_UART_TRANSMITTER" value="false" />
+  <parameter name="NUMBER_OF_SENSORS" value="32" />
+ </module>
+ <module name="DarkRoom_0" kind="DarkRoom" version="1.0" enabled="1">
+  <parameter name="ENABLE_SPI_TRANSMITTER" value="false" />
+  <parameter name="NUMBER_OF_SENSORS" value="32" />
+ </module>
  <module name="button_pio" kind="altera_avalon_pio" version="17.0" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="true" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -1018,6 +1072,24 @@
    kind="avalon"
    version="17.0"
    start="fpga_only_master.master"
+   end="DarkRoom_0.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00010200" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="17.0"
+   start="fpga_only_master.master"
+   end="DarkRoomOOTXdecoder_0.avalon_slave_0">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00010100" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="17.0"
+   start="fpga_only_master.master"
    end="sysid_qsys.control_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00010000" />
@@ -1093,6 +1165,16 @@
    version="17.0"
    start="clk_0.clk"
    end="intr_capturer_0.clock" />
+ <connection
+   kind="clock"
+   version="17.0"
+   start="clk_0.clk"
+   end="DarkRoom_0.clock_sink" />
+ <connection
+   kind="clock"
+   version="17.0"
+   start="clk_0.clk"
+   end="DarkRoomOOTXdecoder_0.clock_sink" />
  <connection
    kind="clock"
    version="17.0"
@@ -1185,6 +1267,16 @@
    version="17.0"
    start="clk_0.clk_reset"
    end="jtag_uart.reset" />
+ <connection
+   kind="reset"
+   version="17.0"
+   start="clk_0.clk_reset"
+   end="DarkRoom_0.reset" />
+ <connection
+   kind="reset"
+   version="17.0"
+   start="clk_0.clk_reset"
+   end="DarkRoomOOTXdecoder_0.reset" />
  <connection
    kind="reset"
    version="17.0"
